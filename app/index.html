@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My App</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body ng-app="sirvDrag">
+    <h1>Sirv drag app!</h1>
+
+	<div class="main" ng-controller="MainCtrl" selectable-area>
+		<div ng-repeat="item in items" class="selectable" ng-class="{'selecting': isSelecting ,'selected': isSelected}" selectable-item>{{item.name}}</div>
+		<div class="selectable">{{items[0].name}}</div>
+		<div class="selectable">{{items[1].name}}</div>
+		<div class="selectable">{{items[2].name}}</div>
+	</div>
+	
+	<script src="components/jquery/dist/jquery.js"></script>
+	<script src="components/angular/angular.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+</body>
+</html>

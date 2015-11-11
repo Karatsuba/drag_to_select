@@ -1,0 +1,28 @@
+.main{
+	overflow: hidden;
+	height: 400px;
+}
+
+.selectable{
+	float: left;
+	border: 1px dashed #888;
+	background: #EEE;
+	text-align: center;
+	padding: 20px;
+	margin: 0 10px 10px 0;
+}
+
+.selectable.selecting{
+	background: #2e2e2e;
+}
+
+.selectable.selected{
+	background: #aeaeae;
+}
+
+.area {
+    position: absolute;
+    border: 1px dashed blue;
+    background: blue;
+    opacity: 0.2;
+}
