@@ -4,19 +4,24 @@
 
 	sirvDrag.controller('MainCtrl', function ($scope) {
 
-		$scope.items = _.range(1000).map(function (item) {
+		$scope.items = _.range(10).map(function (item) {
 			return { 
 				name: 'Mike',
 				path: 'pathToFile'
 			};
 		});
 
+		this.select = function (items) {
+			console.log(items);
+		};
+
 	});
 
 	sirvDrag.directive('selectableArea', function ($document, $timeout) {
 		return {
 			restrict: 'A',
-			controller: function ($scope, $element) {
+            controllerAs: 'area',
+			controller: function ($scope, $element, $attrs) {
 
 				this.selectableItems = [];
 
@@ -144,6 +149,14 @@
 				function handleMouseUp (event) {
                     event.preventDefault();
 
+					var items = ctrl.selectableItems.filter(function (item) {
+						return item.isSelected();
+					}).map(function (item) {
+						return item.getContext();
+					});
+
+					$scope.$eval($attrs.onSelected, {$items: items});
+
 					// delete selected area
 					area.remove();
 
@@ -160,7 +173,6 @@
 	sirvDrag.directive('selectableItem', function () {
 		return {
 			restrict: 'A',
-			// scope: true,
 			require: '^selectableArea',
 			link: function($scope, $element, $attrs, ctrl) {
 
@@ -181,11 +193,14 @@
 					selecting: function () {
 						$element.addClass('selecting');
 					},
+					isSelected: function () {
+						return $element.hasClass('selecting');
+					},
 					notSelecting: function () {
 						$element.removeClass('selecting');
 					},
 					getContext: function () {
-						return $scope.$parent().item;
+						return $scope.$eval($attrs.selectableItem);
 					}
 				};
 

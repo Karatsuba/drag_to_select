@@ -8,8 +8,8 @@
 <body ng-app="sirvDrag">
     <h1>Sirv drag app!</h1>
 
-	<div class="main" ng-controller="MainCtrl" selectable-area>
-		<div ng-repeat="item in items" class="selectable" selectable-item>{{item.name}}</div>
+	<div class="main" ng-controller="MainCtrl as main" selectable-area on-selected="main.select($items)">
+		<div ng-repeat="item in items" class="selectable" selectable-item="item" >{{item.name}}</div>
 		<!-- <div class="selectable">{{items[0].name}}</div> -->
 		<!-- <div class="selectable">{{items[1].name}}</div> -->
 		<!-- <div class="selectable">{{items[2].name}}</div> -->
