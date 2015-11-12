@@ -1,6 +1,5 @@
 .main{
 	overflow: hidden;
-	height: 400px;
 }
 
 .selectable{
@@ -22,7 +21,7 @@
 
 .area {
     position: absolute;
-    border: 1px dashed blue;
-    background: blue;
+    border: 1px dashed red;
+    background: red;
     opacity: 0.2;
 }

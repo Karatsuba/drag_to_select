@@ -4,28 +4,12 @@
 
 	sirvDrag.controller('MainCtrl', function ($scope) {
 
-		$scope.items = [
-			{ 
+		$scope.items = _.range(1000).map(function (item) {
+			return { 
 				name: 'Mike',
 				path: 'pathToFile'
-			},
-			{ 
-				name: 'Bob',
-				path: 'pathToFile'
-			},
-			{ 
-				name: 'Alex',
-				path: 'pathToFile'
-			},
-			{ 
-				name: 'John',
-				path: 'pathToFile'
-			},
-			{ 
-				name: 'Richard',
-				path: 'pathToFile'
-			}
-		];
+			};
+		});
 
 	});
 
@@ -99,7 +83,18 @@
 					    "width": (endPoint.x - startPoint.x) + "px"
 					});
 
-					return normalizedPoints;
+					var bounds = area[0].getBoundingClientRect();
+
+					return {
+						start: {
+							x: bounds.left,
+							y: bounds.top
+						},
+						end: {
+							x: bounds.right,
+							y: bounds.bottom
+						}
+					};
 				}
 
 				function handleMouseDown (event) {
@@ -136,7 +131,6 @@
 
                     	if ( ctrl.isIntersect(selectedArea, item.getBounds()) ){
                     		item.selecting();
-                    		item.notSelected();
                     	} else{
                     		item.notSelecting();
                     	}
@@ -153,18 +147,6 @@
 					// delete selected area
 					area.remove();
 
-                    ctrl.selectableItems.forEach(function (item) {
-
-                    	if (item.isSelecting()){
-                    		item.selected();
-                    	} else{
-                    		item.notSelected();
-                    	}
-
-					});
-
-                   	$scope.$digest();
-
 					$document.off('mousemove', handleMouseMove);
 					$document.off('mouseup', handleMouseUp);
 				}
@@ -178,17 +160,13 @@
 	sirvDrag.directive('selectableItem', function () {
 		return {
 			restrict: 'A',
-			scope: true,
+			// scope: true,
 			require: '^selectableArea',
 			link: function($scope, $element, $attrs, ctrl) {
 
-				$scope.isSelecting = false;
-				$scope.isSelected = false;
-
 				var item = {
-					element: $element,
 					getBounds: function () {
-						var bounds = this.element[0].getBoundingClientRect();
+						var bounds = $element[0].getBoundingClientRect();
 						return {
 							start: {
 								x: bounds.left,
@@ -201,25 +179,13 @@
 						};
 					},
 					selecting: function () {
-						this.element.scope().isSelecting = true;
-					},
-					isSelecting: function () {
-						return this.element.scope().isSelecting;
+						$element.addClass('selecting');
 					},
 					notSelecting: function () {
-						this.element.scope().isSelecting = false;
-					},
-					selected: function () {
-						this.element.scope().isSelected = true;
-					},
-					isSelected: function () {
-						return this.element.scope().isSelected;
-					},
-					notSelected: function () {
-						this.element.scope().isSelected = false;
+						$element.removeClass('selecting');
 					},
 					getContext: function () {
-						return this.element.scope().$parent().item;
+						return $scope.$parent().item;
 					}
 				};
 
